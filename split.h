@@ -9,7 +9,7 @@
 namespace kautil{
     struct split_view;
     struct split_view_iterator{
-        struct current_value{ uint64_t size =0;void * data=0; } cur_expr;
+        struct current_value{ void * data=0;uint64_t size =0; } cur_expr;
         using size_type = uint32_t;
         using reference = current_value&;
         

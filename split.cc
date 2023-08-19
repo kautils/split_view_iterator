@@ -54,10 +54,12 @@ namespace kautil{
         }
     
         bool next() {
-            fst ? fst = false
-                : cur = cur_end + delm_bytes;
-    
+            
+            // intend to blanch less optimization
+            cur = cur*fst + cur_end+delm_bytes*!fst;
             cur_end = cur;
+            fst = false;
+
             for (; cur_end < bin_end - delm_bytes + 1; ++cur_end) {
                 if (memcmp((void *) cur_end, (void *) delm, delm_bytes))continue;
                 return true;
@@ -150,7 +152,7 @@ int tmain_kautil_split_static(){
         for(auto i = 0;i < 1000 ; ++i){
             auto split = kautil::split_view_iterator{};
             split.setup((void *)bin, 1024, (void *)dlm, 2);
-            for(auto & [len,cur] :split ){
+            for(auto & [cur,len] :split ){
                 printf("+++%.*s\n",len,reinterpret_cast<char*>(cur));
                 fflush(stdout);
             }
