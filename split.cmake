@@ -1,0 +1,26 @@
+
+unset(__main) 
+unset(__libs)
+unset(__tmain)
+unset(__tmain_libs)
+unset(__alias )
+
+set(__main kautil_split_static)
+set(__alias kautil::split)
+set(__tmain tmain_kautil_split_static)
+set(__tmain_mc TMAIN_KAUTIL_SPLIT_STATIC)
+
+set(__t ${__main})
+add_library(${__t} STATIC)
+unset(srcs)
+file(GLOB srcs ${CMAKE_CURRENT_LIST_DIR}/*.cc)
+target_sources(${__t} PRIVATE ${srcs})
+target_link_libraries(${__t} PRIVATE ${__libs})
+target_include_directories(${__t} PRIVATE include)
+add_library(${__alias} ALIAS ${__t})
+
+set(__t ${__tmain})
+add_executable(${__t})
+target_sources(${__t} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/unit_test.cc)
+target_link_libraries(${__t} PRIVATE ${__alias})
+target_compile_definitions(${__t} PRIVATE ${__tmain_mc})
