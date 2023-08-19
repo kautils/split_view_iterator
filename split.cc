@@ -31,6 +31,7 @@ namespace kautil{
         uintptr_t delm=0;
         size_type delm_bytes=0;
         std::string * membuffer =0;
+        split_view_iterator::current_value cur_expr;
         bool fst = true;
         bool root = true;
         
@@ -106,10 +107,10 @@ kautil::split_view_iterator::self_type kautil::split_view_iterator::operator++(i
     m->next(); return *this;
 }
 kautil::split_view_iterator::reference kautil::split_view_iterator::operator*(){
-    cur_expr.size = m->cur_end -m->cur;
+    m->cur_expr.size = m->cur_end -m->cur;
     if(m->cur > m->cur_end) throw split_view_exception{1024,"pos begin(%llx) > pos end(%llx) . [%s(%d)]",m->cur,m->cur_end,__FILE__,__LINE__};
-    cur_expr.data = (void*)m->cur;
-    return cur_expr;
+    m->cur_expr.data = (void*)m->cur;
+    return m->cur_expr;
 } 
 bool kautil::split_view_iterator::operator!=(const self_type& r){
     return m->cur != r.m->cur;
